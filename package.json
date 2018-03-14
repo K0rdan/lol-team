@@ -1,0 +1,18 @@
+{
+  "name": "lol-team",
+  "version": "1.0.0",
+  "scripts": {
+    "run": "sh ./scripts/docker/run.sh",
+    "run-dev": "sh ./scripts/docker/run-dev.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/K0rdan/lol-team.git"
+  },
+  "author": "Kordan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/K0rdan/lol-team/issues"
+  },
+  "homepage": "https://github.com/K0rdan/lol-team#readme"
+}

@@ -1,0 +1,15 @@
+version: '3.5'
+
+services:
+  lolteam-db:
+    container_name: lolteam-db
+    image: postgres:${LOLTEAM_POSTGRES_VERSION}
+    expose:
+      - "${LOLTEAM_POSTGRES_PORT}"
+    volumes:
+      - ./lolteam-db/initdb:/docker-entrypoint-initdb.d/
+    environment:
+      - POSTGRES_PORT=${LOLTEAM_POSTGRES_PORT}
+      - POSTGRES_DB=${LOLTEAM_POSTGRES_DB}
+      - POSTGRES_USER=${LOLTEAM_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${LOLTEAM_POSTGRES_PASSWORD}

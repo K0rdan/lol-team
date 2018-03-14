@@ -1,0 +1,24 @@
+version: '3.5'
+
+services:
+  lolteam-db:
+    container_name: lolteam-db
+    image: postgres:${LOLTEAM_POSTGRES_VERSION}
+    expose:
+      - "${LOLTEAM_POSTGRES_PORT}"
+    volumes:
+      - ./lolteam-db/initdb:/docker-entrypoint-initdb.d/
+    environment:
+      - POSTGRES_PORT=${LOLTEAM_POSTGRES_PORT}
+      - POSTGRES_DB=${LOLTEAM_POSTGRES_DB}
+      - POSTGRES_USER=${LOLTEAM_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${LOLTEAM_POSTGRES_PASSWORD}
+  lolteam-db-admin:
+    container_name: lolteam-db-admin
+    image: dpage/pgadmin4:${LOLTEAM_PGADMIN_VERSION}
+    ports:
+      - "${LOLTEAM_PGADMIN_PORT}:${LOLTEAM_PGADMIN_PORT}"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${LOLTEAM_PGADMIN_USER}
+      - PGADMIN_DEFAULT_PASSWORD=${LOLTEAM_PGADMIN_PASSWORD}
+      - PGADMIN_SERVER_NAME=${LOLTEAM_PGADMIN_SERVER_NAME}
