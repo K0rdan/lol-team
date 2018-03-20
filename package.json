@@ -1,9 +1,14 @@
 {
   "name": "lol-team",
   "version": "1.0.0",
+  "bin": {
+    "lolteam": "./dist/bundle.js"
+  },
   "scripts": {
-    "run": "sh ./scripts/docker/run.sh",
-    "run-dev": "sh ./scripts/docker/run-dev.sh"
+    "start": "npm run build && node ./dist/bundle.js",
+    "build": "npm run clean && rollup -c",
+    "clean": "rimraf ./dist",
+    "dev": "nodemon"
   },
   "repository": {
     "type": "git",
@@ -14,5 +19,17 @@
   "bugs": {
     "url": "https://github.com/K0rdan/lol-team/issues"
   },
-  "homepage": "https://github.com/K0rdan/lol-team#readme"
+  "homepage": "https://github.com/K0rdan/lol-team#readme",
+  "dependencies": {
+    "ansi-regex": "^3.0.0",
+    "chalk": "^2.3.2",
+    "commander": "^2.15.0",
+    "lodash": "^4.17.5",
+    "strip-ansi-stream": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.2",
+    "rollup": "^0.57.0",
+    "rollup-plugin-replace": "^2.0.0"
+  }
 }
