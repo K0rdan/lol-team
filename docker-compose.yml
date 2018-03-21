@@ -1,5 +1,9 @@
 version: '3.5'
 
+volumes:
+  lolteam-db-data:
+    external: true
+
 services:
   lolteam-db:
     container_name: lolteam-db
@@ -7,7 +11,8 @@ services:
     expose:
       - "${LOLTEAM_POSTGRES_PORT}"
     volumes:
-      - ./lolteam-db/initdb:/docker-entrypoint-initdb.d/
+      - ${LOLTEAM_POSTGRES_INITDB_PATH}:/docker-entrypoint-initdb.d/
+      - lolteam-db-data:/var/lib/postgresql/data/pgdata
     environment:
       - POSTGRES_PORT=${LOLTEAM_POSTGRES_PORT}
       - POSTGRES_DB=${LOLTEAM_POSTGRES_DB}
