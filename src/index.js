@@ -1,56 +1,55 @@
+// Lib imports
 import program from "commander";
 import { spawn, spawnSync } from "child_process";
-import chalk from "chalk";
 import stripAnsiStream from "strip-ansi-stream";
-import ansiRegex from "ansi-regex";
+import chalk from "chalk";
 import { concat, map } from "lodash";
+// Custom imports
+import { cleanResponse } from "./utils";
+import { run, runDev, clean } from "./actions";
 
-const clearResponse = (bufferData, command) =>
-  new Buffer(bufferData)
-    .toString()
-    .replace(/\r/g, "")
-    .replace(/\n/g, command === "clean" ? " " : "")
-    .replace(ansiRegex(), "")
-    .trim();
-
-const responseHandler = data => {
-  console.log(`${chalk.green(`[LOLTEAM][Info]`)} ${clearResponse(data)}`);
+const responseHandler = (data, commandName) => {
+  console.log(
+    `${chalk.green(
+      `[LOLTEAM][${commandName.toUpperCase()}][Info]`
+    )} ${cleanResponse(data)}`
+  );
 };
 
-const listenOn = childProcess => {
+const customListeners = (cmdName, childProcess) => {
   const stream = stripAnsiStream().pipe(childProcess);
   stream.stdout.on("data", data => {
-    responseHandler(data);
+    responseHandler(data, cmdName);
   });
   stream.stderr.on("data", data => {
-    responseHandler(data);
+    responseHandler(data, cmdName);
   });
 };
 
+// INIT
+program
+  .command("init")
+  .description("Initialize lolteam docker project.")
+  .action(cmd => init());
+
+// RUN
+program
+  .command("run")
+  .description("Initialize lolteam docker project with production environment.")
+  .action(cmd => run(customListeners));
+
+// RUN-DEV
 program
   .command("run-dev")
   .description(
     "Initialize lolteam docker project with development environment."
   )
-  .action(cmd =>
-    listenOn(
-      spawn(`docker-compose`, [`-f`, `docker-compose-dev.yml`, `up`, `-d`], {})
-    )
-  );
+  .action(cmd => runDev(customListeners));
 
-program
-  .command("run")
-  .description("Initialize lolteam docker project with production environment.")
-  .action(cmd => listenOn(spawn(`docker-compose`, [`up`, `-d`])));
-
+// CLEAN
 program
   .command("clean")
   .description("Delete lolteam's docker containers.")
-  .action(cmd => {
-    // list containers
-    const commandRes = spawnSync(`docker`, [`ps`, `-aq`]).output;
-    const containersArr = clearResponse(commandRes[1], "clean").split(" ");
-    listenOn(spawn(`docker`, concat([`rm`, `-f`], containersArr)));
-  });
+  .action(cmd => clean(customListeners));
 
 program.parse(process.argv);
