@@ -2,14 +2,17 @@ const replace = require("rollup-plugin-replace");
 const dependencies = require("./package.json").dependencies;
 
 export default {
-  entry: "./src/index.js",
-  banner: "#!/usr/bin/env node",
+  input: "./src/index.js",
+  output: {
+    name: "rollup",
+    file: "dist/bundle.js",
+    format: "umd",
+    globals: Object.keys(dependencies).reduce(
+      (o, key) => Object.assign(o, { [key]: key }),
+      {}
+    ),
+    banner: "#!/usr/bin/env node"
+  },
   plugins: [replace({ "#!/usr/bin/env node": "" })],
-  moduleName: "rollup",
-  targets: [{ dest: "dist/bundle.js", format: "umd" }],
-  external: Object.keys(dependencies).map(mod => mod),
-  globals: Object.keys(dependencies).reduce(
-    (o, key) => Object.assign(o, { [key]: key }),
-    {}
-  )
+  external: Object.keys(dependencies).map(mod => mod)
 };
