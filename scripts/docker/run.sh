@@ -4,8 +4,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" # Resolve current execut
 ## Import utilities
 source $DIR/utils/main.sh
 
-echo "Stopping others containers..."
-stopAllContainers
-
+removeAllContainers
 echo "Starting project's containers..."
 docker-compose -f "docker-compose.yml" up -d
