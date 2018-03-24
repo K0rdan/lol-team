@@ -5,8 +5,8 @@ import stripAnsiStream from "strip-ansi-stream";
 import chalk from "chalk";
 import { concat, map } from "lodash";
 // Custom imports
-import { cleanResponse } from "./utils";
-import { run, runDev, clean } from "./actions";
+import { init, run, runDev, clean } from "./commands/index";
+import { cleanResponse } from "./utils/index";
 
 const responseHandler = (data, commandName) => {
   console.log(

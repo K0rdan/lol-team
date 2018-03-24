@@ -1,5 +1,11 @@
+// Lib imports
 import ansiRegex from "ansi-regex";
 
+/** @function cleanResponse
+ * @description Clean the response Buffer received from the ChildProcess commands' stream.
+ * @param {Buffer} bufferData
+ * @param {String} command
+ */
 export const cleanResponse = (bufferData, command) =>
   new Buffer(bufferData)
     .toString()
@@ -8,8 +14,4 @@ export const cleanResponse = (bufferData, command) =>
     .replace(ansiRegex(), "")
     .trim();
 
-export const utils = {
-  cleanResponse
-};
-
-export default utils;
+export default cleanResponse;
